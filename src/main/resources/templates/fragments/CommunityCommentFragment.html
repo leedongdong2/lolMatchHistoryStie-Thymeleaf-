@@ -1,0 +1,53 @@
+<th:block th:fragment="CommunityCommentFragment(comment)" >
+    <div th:style="'margin-left:' + (${comment.depth} * 1) + 'vw;'+ 'min-height:11vh;background-color: #23272b;color: rgba(240, 248, 255, 0.514);' " >
+      <div class="communityCommentBox">
+        <div class="communityCommentInfo">
+          <strong th:text="${comment.author}"></strong> |
+          <span th:text="${comment.prettyTime}"></span>
+        </div>
+        <div id="commentContent" class="communityComment"  th:text="${comment.content}"></div>
+            <div th:unless="${#authorization.expression('isAuthenticated()') and comment.author == #authentication.principal.nickname}"  class="toggleReplyForm">답글달기</div>
+            <div th:if="${#authorization.expression('isAuthenticated()') and  comment.author == #authentication.principal.nickname}" class="communityCommentButtons">
+                <span style="cursor:pointer;" class="toggleUpdateReplyForm">수정</span>
+                <span style="cursor:pointer;" class="deleteCommentBtn">삭제</span>
+              <div class="replyUpdateFormBox communityReplyFormBox">
+                <div class="flex">
+                  <div>
+                    <form>
+                      <input class="replyUpdateCommentParentSeq" type="hidden" th:value="${comment.seq}">
+                      <input class="replyUpdateCommentPostSeq" type="hidden" th:value="${comment.postSeq}">
+                      <textarea class="replyUpdateCommentContent replyCommentContent" th:text="${comment.content}" ></textarea>
+                    </form>
+                  </div>
+                  <div>
+                    <button type="button" class="replyUpdateCommentBtn replyCommentBtn">수정</button>
+                  </div>  
+                </div>  
+              </div>
+            </div>
+            <div th:unless="${#authorization.expression('isAuthenticated()') and comment.author == #authentication.principal.nickname}">  
+              <div class="replyFormBox communityReplyFormBox" >
+                <div class="flex">
+                  <div>
+                    <form>
+                      <input class="replyCommentParentSeq" type="hidden" th:value="${comment.seq}">
+                      <input class="replyCommentPostSeq" type="hidden" th:value="${comment.postSeq}">
+                      <textarea class="replyCommentContent replyCommentContent" ></textarea>
+                    </form>
+                  </div>
+                  <div>
+                    <button type="button" class="replyCommentBtn replyCommentBtn">작성</button>
+                  </div>  
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 자식 댓글이 있다면 반복 -->
+    <div th:if="${#lists.size(comment.children) > 0}">
+      <div th:each="child : ${comment.children}">
+          <th:block th:replace="~{fragments/CommunityCommentFragment :: CommunityCommentFragment(comment=${child})}"> </th:block>
+      </div>
+    </div>
+</th:block>

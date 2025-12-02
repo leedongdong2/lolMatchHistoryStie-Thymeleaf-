@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <div layout:fragment="content">
+        <div class="commonMainBox">
+            <div class="recentTenBox">
+                <div class="recentTenTextBox">
+                    Latest 10 list
+                </div>    
+                <div>
+                    <div th:each="recentTenFindMemberBoard : ${recentTenFindMemberBoard}" th:attr="data-recent-find-member-board-serial=${recentTenFindMemberBoard.seq}" class="recentTenFindMemberBoardList recentTenBoardBox">
+                        <div th:text="${recentTenFindMemberBoard.views}" class="recentTenBoardView"></div>
+                        <div>
+                            <div class="recentTenBoardContentBox">
+                                <div th:text="${recentTenFindMemberBoard.title}" class="recentTenBoardTitle"></div>
+                                <div th:text="'['+${recentTenFindMemberBoard.commentCount}+']'" class="recentTenBoardCommentCount"></div>    
+                            </div>
+                            <div th:text="${recentTenFindMemberBoard.nickname}" class="recentTenBoardAuthor"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mainBoardBox">
+                
+                <div>
+                    <div class="boardSearchBox">
+                        <div class="flex">
+                            <div class="boardTitle">
+                                듀오매칭
+                            </div>
+                            <div class="boardWriteText">
+                                <a th:href = "@{/findMemberBoard/page/write}">글쓰기</a>
+                            </div>
+                        </div>
+                        <div class="findMemberBoardSearchOptionBox">
+                            <form th:action="@{/findMemberBoard}" method="GET">
+                                <select name="matchType" class="findMemberBoardMatchType">
+                                    <option value="" th:selected="${matchType} == null or ${matchType} == '' ">전체</option>
+                                    <option value="랭크" th:selected="${matchType} == '랭크' ">랭크</option>
+                                    <option value="칼바람" th:selected="${matchType} == '칼바람' ">칼바람</option>
+                                    <option value="사용자 지정" th:selected="${matchType} == '사용자 지정' ">사용자 지정</option>
+                                    <option value="우르프" th:selected="${matchType} == '우르프' ">우르프</option>
+                                </select><select name="searchType" class="findMemberBoardSearchType">
+                                    <option value="" th:selected="${searchType} == 'null' or ${searchType} == '' ">전체</option>
+                                    <option value="title" th:selected="${searchType} == 'title' ">제목</option>
+                                    <option value="nickname" th:selected="${searchType} == 'nickname' ">작성자</option>
+                                </select><input type="text" th:value="${searchText}" name="searchText" class="findMemberBoardSearchText"><button class="findMemberBoardSearchButton">검색</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="marginTop">
+                        <div th:if="${#lists.isEmpty(findMemberBoardList)}" class="nullListBox">
+                            <div>
+                                내용이 없습니다..
+                            </div>
+                        </div>
+
+                        <div th:each="findMemberBoard : ${findMemberBoardList}" class="findMemberBoardBox boardContentBox" th:attr="data-find-member-board-seq=${findMemberBoard.seq}">
+                            <div class="boardViewCount">
+                                <span th:text="${findMemberBoard.views}" class="e0e4d6FontColor"></span>
+                            </div>
+                            <div class="boardContent">
+                                <div class="minusMarginBottom">
+                                    <strong th:text="${findMemberBoard.title}" class="e0e4d6FontColor" >제목</strong>
+                                    <span th:text="[ + ${findMemberBoard.commentCount} + ]" class="commentCount"></span> 
+                                </div>
+                                <div class="boardContentInfo">
+                                    <span th:text="${findMemberBoard.prettyTime}"></span>
+                                    <span th:text="${findMemberBoard.matchType}"></span>
+                                    <span th:text="${findMemberBoard.nickname}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <form id="getFindMemberBoardDetailForm"action="/findMemberBoard/detail" method="GET" >
+                                <input name="findMemberBoardSeq" type="hidden">
+                            </form>
+                        </div>
+                    </div>
+                    <div th:unless="${#lists.isEmpty(findMemberBoardList)}" class="boardPageBox">
+                            <a th:href="@{/findMemberBoard(page=1,
+                                                searchType=${searchType},
+                                                searchText=${searchText},
+                                                matchType=${matchType})}"
+                                style="font-weight: 600;color: #ffffffc2;">
+                                        &laquo; 처음
+                            </a>
+
+                                <div th:each="i : ${#numbers.sequence(page.startPage, page.endPage)}" class="boardPage">
+                                <a th:href="@{/findMemberBoard(
+                                                page=${i},
+                                                searchType=${searchType},
+                                                searchText=${searchText},
+                                                matchType=${matchType})}"
+                                    th:text="${i}"
+                                    th:classappend="${i == page.page} ? 'active'">
+                                    </a>
+                                </div>
+
+                                <!-- 마지막 페이지로 이동 -->
+                                <a th:href="@{/findMemberBoard(page=${page.totalPages},
+                                                 searchType=${searchType},
+                                                searchText=${searchText},
+                                                matchType=${matchType})}"
+                                    style="font-weight: 600;color: #ffffffc2;">
+                                마지막 &raquo;
+                                </a>
+                        </div>
+                </div>
+            </div>
+        </div>
+     <script th:src="@{/js/findMemberBoard.js}"></script>
+     </div>
+</body>
+</html>

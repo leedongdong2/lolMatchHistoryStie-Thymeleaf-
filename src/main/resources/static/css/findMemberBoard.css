@@ -1,0 +1,40 @@
+.findMemberBoardSearchOptionBox {
+    margin-right: 1vw;
+    margin-top: 1vh;
+    display: flex;
+    justify-content: flex-end;
+}
+.findMemberBoardMatchType {
+    width: 4vw;
+    background-color: #31343a;
+    height: 4vh;
+    border: none;
+    outline: none;
+     vertical-align: top;
+}
+
+.findMemberBoardSearchType {
+    width: 3vw;
+    height: 4vh;
+    background-color: #31343ac7;
+    border: none;
+    outline: none;
+    vertical-align: top;
+}
+
+.findMemberBoardSearchText {
+    all:unset;
+    width: 15vw;
+    background-color: #161616;
+    height: 4vh;
+    vertical-align: top;
+    color: #fff;
+}
+
+.findMemberBoardSearchButton {
+    all:unset;
+    background-color: #31343a;
+    width: 2.2vw;
+    height: 4vh;
+    text-align: left;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="updateBox">
+            <form id="findMemberBoardUpdateForm">
+                <div class="updateInputBox"> 
+                    <input  type="hidden" id="findMemberBoardUpdateFormSeq"  th:value="${findMemberBoardDto.seq}">
+                    <div class="updateTitleBox">
+                         <div class="updateTitleText">
+                            제목
+                        </div>
+                    </div>
+                    <div>
+                        <input name="title" th:value="${findMemberBoardDto.title}" class="findMemberBoardUpdateTitle">
+                    </div>
+                    <select name="matchType" class="findMemberBoardUpdateMatchType">
+                        <option value="랭크" th:selected="${findMemberBoardDto.matchType} == '랭크' ">랭크</option>
+                        <option value="칼바람" th:selected="${findMemberBoardDto.matchType} == '칼바람' ">칼바람</option>
+                        <option value="사용자 지정" th:selected="${findMemberBoardDto.matchType} == '사용자 지정' ">사용자 지정</option>
+                        <option value="우르프" th:selected="${findMemberBoardDto.matchType} == '우르프' ">우르프</option>
+                    </select>
+                </div>
+                    <div>
+                        <textarea name="content" th:text="${findMemberBoardDto.content}" rows="40" class="findMemberBoardUpdateContent"></textarea>
+                    </div>
+                    <div class="updateBtnBox">
+                        <input id="findMemberBoardUpdateBtn" class="updateBtn" type="button" value="수정">
+                        <input id="findMemberBoardDeleteBtn" class="deleteBtn" type="button" value="삭제">
+                    </div>
+            </form>
+        </div>
+    <script th:src="@{/js/findMemberBoard.js}"></script>
+    </div>
+</body>
+</html>

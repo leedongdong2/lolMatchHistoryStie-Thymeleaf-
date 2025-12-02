@@ -1,0 +1,63 @@
+.findMemberBoardDetailCommentBox {
+    width: 100%;
+    margin-top: 0.1vh;
+    min-height: 10vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #23272b;
+    color: rgba(240, 248, 255, 0.514);
+}
+
+.findMemberBoardDetailCommentInfo {
+    margin-top: 0.7vh;
+    margin-left: 1vw;
+}
+
+.findMemberBoardDetailComment {
+    margin-top: 2vh;
+    margin-left: 1.4vw; 
+
+}
+
+.findMemberBoardDetailCommentButtons {
+    margin-top: 2vh;
+    font-size: small;
+    margin-left: 1vw;
+}
+
+.updateFindmemberBoardDetailCommentBox{
+    display: none;
+    margin-top: 0.5vh;
+}
+
+.updateFindmemberBoardDetailComment {
+    display: flex;
+    margin-left: 1vw;
+}
+
+.updateFindmemberBoardDetailCommentContent {
+    all:unset;
+    width: 35vw;
+    height: 5vh;
+    background-color: #c7c4c4;
+    color: #000;
+}
+
+.updateFindmemberBoardDetailCommentBtn{
+    all:unset;
+    cursor: pointer;
+    background-color: #2f3336;
+    width: 3vw;
+    height: 5vh;
+    text-align: center;
+}
+
+.findMemberBoardDetailPageBox{
+    display: flex;
+    gap: 0.5vw;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    color: rgba(240, 248, 255, 0.692);
+    justify-content: center;
+}
+

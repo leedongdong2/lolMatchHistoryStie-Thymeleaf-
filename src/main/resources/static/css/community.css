@@ -1,0 +1,46 @@
+.communitySearchBox {
+    display: flex;height: 5vh;
+    font-size: 0.75vw;
+}
+
+.communitySearchViewOption {
+    color: #beb7b7c2; 
+    font-weight: 400;
+    padding-left: 1.3vw;
+    margin-top: auto;
+}
+
+.communitySearchOptionBox {
+    width: 15vw;
+    margin-left: 16vw;
+    margin-top: auto;
+}
+
+.communitySearchType{
+    background-color: #31343a;
+    height: 4vh;
+    border: none;
+    padding-top: 0.55vh;
+    outline: none;
+    vertical-align: top;
+}
+
+.communitySearchText {
+    all:unset;
+    width: 9.8vw;
+    background-color: #161616;
+    height: 4vh;
+    vertical-align: top;
+    color: #fff;
+}
+
+.communitySearchButton{
+    all:unset;
+    background-color: #31343a;
+    width: 2.2vw;
+    height: 4vh;
+    vertical-align: top;
+}
+.searchOrder{
+    cursor: pointer;
+}

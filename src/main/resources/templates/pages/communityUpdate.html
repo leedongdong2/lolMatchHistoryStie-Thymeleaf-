@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="updateBox">
+            <div class="updateInputBox">
+                <div class="updateTitleBox">
+                    <div class="updateTitleText">
+                        제목
+                    </div>
+                </div>
+                <div class="communityUpdateTitleBox">
+                    <div th:text="${communityDetailDto.title}"></div>
+                </div>
+            </div>
+            <div class="communityUpdateContentBox">
+                <form>
+                    <input id="communitySeq" type="hidden" th:value="${communityDetailDto.seq}">
+                    <textarea name="content" id="updateContent" th:text="${communityDetailDto.content}" rows="40" class="communityUpdateContent">
+                    </textarea>
+                    <div class="updateBtnBox">
+                        <input id="updateBtn" class="updateBtn" type="submit" th:value="수정">
+                        <input id="deleteBtn" class="deleteBtn" th:value="삭제">
+                    </div>
+                </form>
+            </div>
+        </div>    
+    <script th:src="@{/smarteditor2/js/HuskyEZCreator.js}" charset="utf-8"></script>
+    <script th:src="@{/js/communityUpdate.js}" charset="utf-8"></script>
+    </div>
+</body>
+</html>

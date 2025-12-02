@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html 
+    lang="kr"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    >
+<head th:replace="~{fragments/cssConfig :: cssFragment}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="header">
+        <header th:replace="~{fragments/header :: headerFragment}"></header>
+    </div>
+    
+    <div id="loginbar" >
+        <th:block th:replace="~{fragments/loginBar :: loginBarFragment}"></th:block>
+    </div>
+
+    <div id="content">
+        <th:block layout:fragment="content"></th:block>
+    </div>
+    
+    <div id="footer">
+        <footer th:replace="~{fragments/footer :: footerFragment}" ></footer>
+    </div>
+
+<th:block th:replace="~{fragments/jsConfig :: jsFragment}"></th:block>
+</body>
+</html>

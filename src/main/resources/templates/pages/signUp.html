@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http:www.thymeleaf.org">
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link th:inline="css" th:href="@{/css/signUp.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="signUpTitlePosition">
+        <div class="signUpTitleFont"> 
+            LDW.GG
+        </div>
+    </div>
+    <div id="signUpBox" class="signUpBox">
+        <form id="signUpForm">
+            <div class="signUpInputBox">
+                <div>회원가입</div>
+                <div class="flex">
+                    <div class="signUpFontBox">
+                        아이디 :
+                    </div>
+                    <div>
+                        <input th:if="${session.socialLogin}" th:value="${session.email}" type="text" id="tnName" name="tnName" readonly/>
+                        <input th:if="${session.socialLogin == null }" type="text" id="tnName" name="tnName" required>
+                    </div>
+                    <div>
+                        <input  type="button" id="idCheckAvailability" value="중복체크" class="signUpIdCheckBox">
+                    </div>
+                </div>
+                <div th:if="${session.socialLogin == null}" class="flex">
+                    <div class="signUpFontBox">
+                        비밀번호 : 
+                    </div>
+                    <div>
+                        <input type="password" id="tnPassword" name="tnPassword" required/>
+                    </div>
+                </div>
+                <div>
+                    <input type="hidden" name="tnPassword">
+                </div>
+                <div class="flex">
+                    <div class="signUpFontBox">
+                        닉네임 :
+                    </div>
+                    <div>
+                        <input type="text" id="nickname" name="nickname">
+                    </div>
+                    <div>
+                        <input type="button" id="nicknameCheckAvailability" value="중복체크" class="nickNameCheckBox">
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="signUpFontBox">
+                        국가:   
+                    </div>
+                    <div>   
+                        <select name="region" id="lang" required>
+                                    <option value="asia/kr">kr</option>
+                                    <option value="america">na</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="signUpNicknameFontBox">
+                        LOL닉네임 : 
+                    </div>
+                    <div>
+                        <input type="text" name="lolName" required/><input type="text" placeholder="#" name="lolNametag" required/>
+                    </div>
+                    <div>
+                        <input type="button" id="lolNameCheckAvailability" value="닉네임체크" class="lolNameCheckBox">
+                    </div>
+                </div>
+                <div><input type="submit" value="signUp" class="signUpButton"></div>
+            </div>
+        </form>
+    </div>
+<script th:src="@{/js/signUp.js}"></script>
+</body>
+
+</html>

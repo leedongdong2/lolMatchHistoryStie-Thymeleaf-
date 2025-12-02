@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{findMatchInfo}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div th:fragment="matchInfoFragment">
+        <div id="lineData"
+            th:attr="
+                    data-game-count=${recentRiotWInAndLineDto.gameCount},
+                    data-win-count=${recentRiotWInAndLineDto.winCount},
+                    data-lose-count=${recentRiotWInAndLineDto.loseCount},
+
+                    data-top-count=${recentRiotWInAndLineDto.topLineCount},
+                    data-mid-count=${recentRiotWInAndLineDto.midLineCount},
+                    data-jungle-count=${recentRiotWInAndLineDto.jungleLineCount},
+                    data-ad-carry-count=${recentRiotWInAndLineDto.adCarryLineCount},
+                    data-support-count=${recentRiotWInAndLineDto.supportLineCount},
+
+                    data-top-percent=${recentRiotWInAndLineDto.topLinePercent},
+                    data-mid-percent=${recentRiotWInAndLineDto.midLinePercent},
+                    data-jungle-percent=${recentRiotWInAndLineDto.jungleLinePercent},
+                    data-ad-carry-percent=${recentRiotWInAndLineDto.adCarryLinePercent},
+                    data-support-percent=${recentRiotWInAndLineDto.supportLinePercent}
+                    ">
+        </div>
+        <div th:each="riotMatchDto,iterStat : ${riotMatchDtoList}"  class="findMatchListBox">
+                <div>
+                    <input type="hidden" class="riotMatchIdList" th:value="${riotMatchIdList[iterStat.index]}">
+                </div>
+                <div  class="riotMatchDtoBox findMatchDtoBox" >
+                    <div class="flex marginTop">
+                        <div class="searchParticipantUserBox">
+                            <div class="searchParticipantIdBox">
+                                <div class="serchIdParticipantId" th:attr="data-riot-serchid-participantid=${riotMatchDto.info.serchIdParticipant.participantId}"></div>
+                            </div>
+                            <div class="searchParticipantUserResultBox">
+                                <div th:text="${riotMatchDto.info.queueName}"></div>
+                                <div th:text="${riotMatchDto.info.gameEndTimestampPrettyTime}"></div>
+                                <div class="searchIdWin searchParticipantUserWin" th:text="${riotMatchDto.info.serchIdWin}"></div>
+                                <div class="searchParticipantUserDurationBox">
+                                    <div th:text="${riotMatchDto.info.gameDurationMinutes} + 'm' "></div>
+                                    <div th:text="${riotMatchDto.info.gameDurationSeconds} + 's' "></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="searchParticipantUserMatchInfoBox">
+                            <div class="searchParticipantUserMatchInfo">
+                                <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/champion/{championKeyName}.png'(championKeyName = ${riotMatchDto.info.serchIdParticipant.championName})}" class="searchParticipantChampionImg"></span>
+                                <div>
+                                    <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/spell/{SummonerSpell1Name}.png'(SummonerSpell1Name=${riotMatchDto.info.serchIdParticipant.summonerSpells[0].summonerSpellId})}" class="searchParticipantSummonerSpellImg" th:attr="data-tippy-content=${riotMatchDto.info.serchIdParticipant.summonerSpells[0].summonerSpellName + '<br>' + riotMatchDto.info.serchIdParticipant.summonerSpells[0].summonerDescription}"/></div>
+                                    <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/spell/{SummonerSpell2Name}.png'(SummonerSpell2Name=${riotMatchDto.info.serchIdParticipant.summonerSpells[1].summonerSpellId})}" class="searchParticipantSummonerSpellImg" th:attr="data-tippy-content=${riotMatchDto.info.serchIdParticipant.summonerSpells[1].summonerSpellName + '<br>' + riotMatchDto.info.serchIdParticipant.summonerSpells[1].summonerDescription}"/></div>
+                                </div>
+                                <div>
+                                    <div th:each="rune, iterStat : ${riotMatchDto.info.serchIdParticipant.rune}">
+                                        <div th:if="${iterStat.index == 0}">
+                                            <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/img/{runeIcon}'(runeIcon=${rune.icon})}"  class="searchParticipantMainRuneImg" th:attr="data-tippy-content=${rune.name} + '<br>' + ${rune.shortDesc}"></span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex;">
+                                        <div th:each="rune, iterStat : ${riotMatchDto.info.serchIdParticipant.rune}">
+                                            <div th:if="${iterStat.index == 4  or iterStat.index == 5}">
+                                                <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/img/{runeIcon}'(runeIcon=${rune.icon})}" class="searchParticipantSubRuneImg" th:attr="data-tippy-content=${rune.name} + '<br>' + ${rune.shortDesc}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="searchParticipantScoreBox">
+                                    <div class="searchParticipantKdaBox">
+                                        <div>
+                                            <span th:text="${riotMatchDto.info.serchIdParticipant.kills}+'/'" class="searchParticipantKAFont"></span>
+                                            <span th:text="${riotMatchDto.info.serchIdParticipant.deaths}+'/'" class="searchParticipantDFont"></span>
+                                            <span th:text="${riotMatchDto.info.serchIdParticipant.assists}" class="searchParticipantKAFont"></span>
+                                        </div>
+                                        <div class="searchParticipantKDAFont">K/D/A</div>
+                                    </div>
+                                    <div class="searchParticipantWardScoreBox">
+                                        <div class="searchParticipantWardKDFont">
+                                            <span th:text="${riotMatchDto.info.serchIdParticipant.wardsPlaced}"></span>/
+                                            <span th:text="${riotMatchDto.info.serchIdParticipant.wardsKilled}"></span>
+                                        </div>
+                                        <div th:text="${riotMatchDto.info.serchIdParticipant.visionScore}" class="searchParticipantWardScore"></div>
+                                        <div th:text="wardScore" class="searchParticipantWardScore"></div>
+                                    </div>
+                                    <div class="searchParticipantCsBox">
+                                        <div th:text="${riotMatchDto.info.serchIdParticipant.neutralMinionsKilled + riotMatchDto.info.serchIdParticipant.totalMinionsKilled}" class="searchParticipantKAFont"></div>
+                                        <div class="searchParticipantKDAFont">cs</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="searchParticipantItemBox">
+                                <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item0}.png'(item0 = ${riotMatchDto.info.serchIdParticipant.item0})}" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" class="searchParticipantItemImg" th:attr="data-tippy-content=${riotMatchDto.info.serchIdParticipant.items[0].name + '<br>' + riotMatchDto.info.serchIdParticipant.items[0].description}"/></span>
+                                <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item1}.png'(item1 = ${riotMatchDto.info.serchIdParticipant.item1})}" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" class="searchParticipantItemImg" th:attr="data-tippy-content=${riotMatchDto.info.serchIdParticipant.items[1].name + '<br>' + riotMatchDto.info.serchIdParticipant.items[1].description}"/></span>
+                                <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item2}.png'(item2 = ${riotMatchDto.info.serchIdParticipant.item2})}" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" class="searchParticipantItemImg" th:attr="data-tippy-content=${riotMatchDto.info.serchIdParticipant.items[2].name + '<br>' + riotMatchDto.info.serchIdParticipant.items[2].description}"/></span>
+                                <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item3}.png'(item3 = ${riotMatchDto.info.serchIdParticipant.item3})}" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" class="searchParticipantItemImg" th:attr="data-tippy-content=${riotMatchDto.info.serchIdParticipant.items[3].name + '<br>' + riotMatchDto.info.serchIdParticipant.items[3].description}"/></span>
+                                <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item4}.png'(item4 = ${riotMatchDto.info.serchIdParticipant.item4})}" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" class="searchParticipantItemImg" th:attr="data-tippy-content=${riotMatchDto.info.serchIdParticipant.items[4].name + '<br>' + riotMatchDto.info.serchIdParticipant.items[4].description}"/></span>
+                                <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item5}.png'(item5 = ${riotMatchDto.info.serchIdParticipant.item5})}" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" class="searchParticipantItemImg" th:attr="data-tippy-content=${riotMatchDto.info.serchIdParticipant.items[5].name + '<br>' + riotMatchDto.info.serchIdParticipant.items[5].description}"/></span>
+                                <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item6}.png'(item6 = ${riotMatchDto.info.serchIdParticipant.item6})}" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" class="searchParticipantItemImg" th:attr="data-tippy-content=${riotMatchDto.info.serchIdParticipant.items[6].name + '<br>' + riotMatchDto.info.serchIdParticipant.items[6].description}"/></span>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="searchMatchParticipantsBox">
+                        <div class="searchMatchParticipants">
+                            <div th:each="matchTopParticipant, iterStat : ${riotMatchDto.info.participants}">
+                                <div th:if="${iterStat.index < 5}" class="flex">
+                                    <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/champion/{championKeyName}.png'(championKeyName = ${matchTopParticipant.championName})}" class="searchMatchParticipantsChampionImg"></div>
+                                    <div class="serchMatchLink searchMatchParticipantsName" th:text="${matchTopParticipant.riotIdGameName}" th:attr="data-riot-id=${matchTopParticipant.riotIdGameName + '#' + matchTopParticipant.riotIdTagline}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="searchMatchParticipants">
+                            <div th:each="matchBottomParticipant, iterStat : ${riotMatchDto.info.participants}">
+                                <div th:if="${iterStat.index > 4 and iterStat.index < 10}" class="flex">
+                                    <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/champion/{championKeyName}.png'(championKeyName = ${matchBottomParticipant.championName})}" class="searchMatchParticipantsChampionImg"></div>
+                                    <div class="serchMatchLink searchMatchParticipantsName" th:text="${matchBottomParticipant.riotIdGameName}" th:attr="data-riot-id=${matchBottomParticipant.riotIdGameName + '#' + matchBottomParticipant.riotIdTagline}" ></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="showMatchInfoMore ">
+                        <div class="overviewTogglePoint" th:text="More"></div>
+                    </div>
+                </div>      
+                <div class="overviewBox">
+                    <div class="overviewButtonBox">
+                        <div class="matchInfoOverview overviewButton"  th:text="개요"></div>
+                        <div class="matchInfoBuild overviewButton"  th:text="빌드"></div>
+                        <div class="matchInfoEtc overviewButton"  th:text="수급량"></div>
+                    </div>
+                    <div class="matchInfoOverviewContainer hide" >
+                    </div>
+                    <div class="matchInfoBuildContainer hide"  >
+                    </div>
+                    <div class="matchInfoEtcContainer hide" >
+                    </div>
+                </div> 
+        </div>
+    </div>
+</body>

@@ -1,0 +1,90 @@
+
+.detailBox{
+    display: flex;
+    gap: 5vw;
+    padding-top: 5vh;
+}
+
+.detailTuckBox {
+    width: 40vw;
+    min-height: 70vh;
+}
+
+.detailTitleBox {
+    background-color: #23272B; 
+    height: 13vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.detailTitleAlign {
+    width: 95%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.detailTitle {
+    color: #BDC1C6;
+    font-size: x-large;
+}
+
+.detailTitleEtcBox {
+    display: flex;
+    margin-top: auto;
+    gap: 0.5vw; 
+    color: #bdc1c6ab;
+    font-size:smaller;
+}
+
+.detailTitleEtc {
+    display: flex;
+    gap:0.5vw;
+    margin-left: auto;
+}
+
+.detailUpdateButton{
+    all : unset;
+    cursor: pointer;
+}
+
+.detailContentBox {
+    background-color: #23272B;
+    min-height: 40vh;
+    margin-top: 0.2vh;
+    color: rgba(210, 241, 241, 0.61)
+}
+
+.detailContent {
+    padding-top: 2vh; 
+    padding-left: 1vw;
+}
+
+.detailCommentWriteBox {
+    display: flex;
+    margin-top: 0.3vh;
+}
+
+.detailCommentWriteContent {
+    all:unset;
+    width: 35.4vw;
+    height: 8vh;
+    background-color: rgba(255, 255, 255, 0.829)
+}
+
+.detailCommentWriteContentBtn {
+    all:unset;width: 4.6vw;
+    text-align: center;
+    height: 8vh;
+     background-color: #2f3336;
+     color: rgba(255, 255, 255, 0.452);
+}
+
+.detailCommentPageBox {
+    display: flex;gap: 0.5vw;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    color: rgba(240, 248, 255, 0.692);
+    justify-content: center;
+}

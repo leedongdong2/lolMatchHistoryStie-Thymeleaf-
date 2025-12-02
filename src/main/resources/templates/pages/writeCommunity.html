@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      layout:fragment="content"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="writeBox">
+        <form method="post"  action="/community/write" onsubmit="return submitContents(this)">
+            <div class="writeInfoBox">  
+                <div class="communityWriteTitleTextBox">
+                    <div class="writeTitleText">
+                        제목
+                    </div>
+                </div>  
+                <div>
+                    <input type="text" name="communityTitle" id="communityTitle" class="communityWriteTitle">
+                </div>
+            </div>
+            <div class="communityWriteContentBox">
+                <textarea name="communityContent" readonly id="communityContent" rows="40" class="communityWriteContent"> </textarea>
+                <input type="submit" class="writeButton">
+            </div>
+        </form>
+    </div>
+
+    <script th:src="@{/smarteditor2/js/HuskyEZCreator.js}" charset="utf-8"></script>
+    <script th:src="@{/js/writeCommunity.js}"></script>
+</body>
+</html>

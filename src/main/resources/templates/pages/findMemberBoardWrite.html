@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="writeBox">
+            <form id="findMemberBoardWriteForm">
+                <div class="writeInfoBox">
+                    <div class="findMemberBoardWriteTitleTextBox">
+                        <div class="writeTitleText">
+                            제목
+                        </div>
+                    </div>  
+                    <div> 
+                        <input name="title" class="findMemberBoardWriteTitle">
+                    </div>
+                    <select name="matchType" class="findMemberBoardWriteMatchType">
+                        <option value="랭크">랭크</option>
+                        <option value="칼바람">칼바람</option>
+                        <option value="사용자 지정">사용자 지정</option>
+                        <option value="우르프">우르프</option>
+                    </select>
+                </div>
+                <div>
+                    <textarea name="content" rows="40" class="findMemberBoardWriteContent"></textarea>
+                </div>
+                <div class="findMemberBoardWriteBtnBox">
+                    <button id="findMemberBoardWriteFormBtn" type="button" class="writeButton">제출</button>
+                </div>
+            </form>
+        </div>
+    <script th:src="@{/js/findMemberBoard.js}"></script>
+    </div>
+</body>
+</html>

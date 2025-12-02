@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="detailBox">
+            <div class="recentTenBox">
+                <div class="recentTenTextBox">
+                    Latest 10 list
+                </div>    
+                <div>
+                    <form id="getFindMemberBoardDetailForm"action="/findMemberBoard/detail" method="GET" >
+                        <input name="findMemberBoardSeq" type="hidden">
+                    </form>
+                    <div th:each="recentTenFindMemberBoard : ${recentTenFindMemberBoard}" th:attr="data-recent-find-member-board-serial=${recentTenFindMemberBoard.seq}" class="recentTenFindMemberBoardList recentTenBoardBox">
+                        <div th:text="${recentTenFindMemberBoard.views}" class="recentTenBoardView"></div>
+                        <div>
+                            <div class="recentTenBoardContentBox">
+                                <div th:text="${recentTenFindMemberBoard.title}" class="recentTenBoardTitle"></div>
+                                <div th:text="'['+${recentTenFindMemberBoard.commentCount}+']'" class="recentTenBoardCommentCount"></div>    
+                            </div>
+                            <div th:text="${recentTenFindMemberBoard.nickname}" class="recentTenBoardAuthor"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="detailTuckBox">
+                <div class="detailTitleBox">
+                    <div class="detailTitleAlign">
+                        <div class="marginTop">
+                            <span th:text="${findMemberBoardDto.title}" class="detailTitle"></span>
+                        </div>
+                        <div class="detailTitleEtcBox">
+                            <div th:text="${findMemberBoardDto.nickname}"></div>|
+                            <div>매칭듀오</div>|  
+                            <div th:text="${findMemberBoardDto.prettyTime}"></div>|
+                            <div th:text="${findMemberBoardDto.matchType}"></div>
+                            <div class="detailTitleEtc">
+                                <div th:text="'views ' + ${findMemberBoardDto.views}"></div>|
+                                <div th:text="'comment ' + ${findMemberBoardDto.commentCount}"></div>|
+                                <div th:if="${#authorization.expression('isAuthenticated()')  and findMemberBoardDto.nickname == #authentication.principal.nickname}">
+                                    <form th:action="@{/findMemberBoard/page/update}" method="get">   
+                                        <input type="hidden" id="findMemberBoardSeq" name="findMemberBoardSeq" th:value="${findMemberBoardDto.seq}">
+                                        <button class="detailUpdateButton">수정</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div  class="detailContentBox">
+                    <div th:utext="${findMemberBoardDto.content}"id="findMemberBoardDtoContent" class="detailContent"></div>
+                </div>
+                <div class="detailCommentWriteBox">
+                    <div>
+                        <form> 
+                            <textarea id="findMemberBoardDetailCommentContent" class="detailCommentWriteContent"></textarea>
+                        </form>
+                    </div>
+                    <div>
+                        <input id="writefindMemberBoardDetailCommentBtn" type="button" class="detailCommentWriteContentBtn" th:value="댓글달기">
+                    </div>
+                </div>
+
+                <div th:unless="${totalCount == 0}">
+                    <div th:each="comment : ${findMemberBoardDetailComment}" class="findMemberBoardDetailCommentBox">
+                        <div class="findMemberBoardDetailCommentInfo">
+                            <span th:text="${comment.nickname}"></span> |
+                            <span th:text="${comment.prettyTime}"></span>
+                        </div>
+                        <div th:text="${comment.content}" class="findMemberBoardDetailComment"></div>
+                        <div th:if="${#authorization.expression('isAuthenticated()')  and comment.nickname == #authentication.principal.nickname}" class="findMemberBoardDetailCommentButtons">
+                            <span class="updateFindmemberBoardDetailCommentBoxBtn">수정</span>
+                            <span class="deleteFindmemberBoardDetailCommentBoxBtn">삭제</span>
+                        </div>
+                        <div class="updateFindmemberBoardDetailCommentBox">
+                            <div class="updateFindmemberBoardDetailComment">
+                                <div>
+                                    <form>
+                                        <input  type="hidden"  class="commentSeq" th:value="${comment.seq}">
+                                        <textarea class="updateFindmemberBoardDetailCommentContent" th:text="${comment.content}"></textarea>
+                                    </form>
+                                </div>
+                                <div>
+                                    <button type="button" class="updateFindmemberBoardDetailCommentBtn" >수정</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div  class="detailCommentPageBox">
+                            <div th:each="i : ${#numbers.sequence(
+                                                T(java.lang.Math).max(1, currentPage - 2),
+                                                T(java.lang.Math).min(totalPages, currentPage + 2))}">
+                                <a th:href="@{/findMemberBoard/detail(
+                                                page=${i},
+                                                findMemberBoardSeq=${findMemberBoardDto.seq}
+                                                )}"
+                                th:text="${i}"
+                                th:classappend="${i == currentPage} ? 'active'">
+                                </a>
+                            </div>
+                    </div>
+                </div> 
+                <div th:if="${totalCount == 0}">
+                    <p>댓글이 없습니다..</p>
+                </div> 
+            </div>
+        </div>
+    <script th:src="@{/js/findMemberBoard.js}"></script>
+    </div>
+</body>
+</html>

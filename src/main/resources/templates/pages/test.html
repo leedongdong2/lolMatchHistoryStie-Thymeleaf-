@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="kr"  xmlns:th="http:www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <p><span th:text="${riotUserDto.gameName}+'#'+${riotUserDto.tagLine}"></span></p>
+        <p><span th:text="${rankDto.tier}+'  '+${rankDto.rank}+ '  '+${rankDto.leaguePoints} +'점'"></span></p><img th:src="@{/riotImg/tier/{tier}.png(tier=${rankDto.tier})}" width="100" height="100" alt="Example Image">
+        <p><span th:text="${rankDto.wins}+'승'+'  '+${rankDto.losses}+'패'"></span></p>
+        <p><span><img th:src="'http://ddragon.leagueoflegends.com/cdn/15.7.1/img/profileicon/'+ ${riotUserDto.profileIconId} + '.png'" width="100" height="100"></span></p>
+</body>
+</html>

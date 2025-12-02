@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html 
+    lang="kr"
+    xmlns:th="http:www.thymeleaf.org"
+    th:fragment="loginBarFragment"
+    >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="loginBox">
+        
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <div th:text="${#authentication.principal.nickname}" class="loginNicknameBox"></div>
+            <div class="loginUserInfoBox">
+                <div class="loginUserRankBox">
+                    <p><span th:text="${session.riotUserDto.gameName}+'#'+${session.riotUserDto.tagLine}" class="textOver"></span></p>
+                    <p style="margin-top: 2vh;"><span th:text="${session.rankDto.tier}+'  '+${session.rankDto.rank}+ '  '+${session.rankDto.leaguePoints} +'점'"></span></p><img th:src="@{/riotImg/tier/{tier}.png(tier=${session.rankDto.tier})}" width="100" height="100" alt="Example Image">
+                    <p style="margin-top: 2vh;"><span th:text="${session.rankDto.wins}+'승'+'  '+${session.rankDto.losses}+'패'"></span></p>
+                    <p style="margin-top: 2vh;"><span><img th:src="'http://ddragon.leagueoflegends.com/cdn/15.8.1/img/profileicon/'+ ${session.riotUserDto.profileIconId} + '.png'" width="90" height="90"></span></p> 
+                </div>   
+                <div class="logoutBox">
+                    <form th:action="@{/logout}" method="post" class="logoutForm">
+                        <button style="all:unset;font-size: large;font-weight: 700;color: rgba(240, 248, 255, 0.644);cursor: pointer;" th:text="로그아웃" type="submit" ></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <a th:href="@{/login}"  th:if="${#authorization.expression('isAnonymous()')}">
+            <div class="loginFontBox">
+                마이페이지
+            </div>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="detailBox">
+            <div class="recentTenBox">
+                <div class="recentTenTextBox">
+                    Latest 10 list
+                </div>    
+                <div>
+                    <form th:action="@{/community/detail}" method="GET" id="communityListForm">
+                        <input type="hidden" name="communitySeq" >
+                    </form>
+                        <div th:each="recentTenCommunity : ${recentTenCommunity}" th:attr="data-recent-community-serial=${recentTenCommunity.seq}"  class="recentTenCommunityList recentTenBoardBox">
+                            <div th:text="${recentTenCommunity.views}" class="recentTenBoardView"></div>
+                            <div>
+                                <div class="recentTenBoardContentBox">
+                                    <div th:text="${recentTenCommunity.title}" class="recentTenBoardTitle"></div>
+                                    <div th:text="'['+${recentTenCommunity.commentCount}+']'" class="recentTenBoardCommentCount"></div>    
+                                </div>
+                                <div th:text="${recentTenCommunity.nickname}" class="recentTenBoardAuthor"></div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="detailTuckBox">
+                <div class="detailTitleBox">
+                    <div class="detailTitleAlign">
+                        <div class="marginTop">
+                            <span th:text="${communityDetailDto.title}" class="detailTitle"></span>
+                        </div>
+                        <div class="detailTitleEtcBox" >
+                            <div th:text="${communityDetailDto.nickname}"></div>| 
+                            <div>자유게시판</div> |
+                            <div th:text="${communityDetailDto.prettyTime}"></div>
+                            <div class="detailTitleEtc">
+                                <div th:text="'views ' + ${communityDetailDto.views}"></div>|
+                                <div th:text="'comment ' + ${communityDetailDto.commentCount}"></div>|
+                                <div th:if = "${#authorization.expression('isAuthenticated()')  and communityDetailDto.nickname == #authentication.principal.nickname}">
+                                    <form th:action="@{/community/updatePage}" method="GET">
+                                        <input type="hidden" name="communitySeq" th:value="${communityDetailDto.seq}">
+                                        <button class="detailUpdateButton">수정</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div  class="detailContentBox">
+                    <div th:utext="${communityDetailDto.content}"id="communityContent" class="detailContent"></div>
+                </div>
+            
+                <div class="detailCommentWriteBox">
+                    <div>
+                        <form>
+                            <textarea id="commentContent" name="content" class="detailCommentWriteContent"></textarea>
+                            <input type="hidden" id="insertCommentSeq" th:value="${communityDetailDto.seq}">
+                        </form>
+                    </div>
+                    <div>
+                        <button id="insertCommentBtn" class="detailCommentWriteContentBtn">댓글달기</button>
+                    </div>
+                </div>
+
+                <div th:unless="${totalCount == 0}">
+                        <div th:each="comment : ${communityCommentList}" >
+                            <th:block th:replace="~{fragments/CommunityCommentFragment :: CommunityCommentFragment(comment=${comment})}"></th:block>
+                        </div>    
+
+                    <div class="pagination detailCommentPageBox" >
+                            <!-- 이전 버튼 -->
+                            <div th:if="${currentPage > 1}">
+                                <a th:href="@{/community/detail(communitySeq=${communityDetailDto.seq}, page=${currentPage - 1})}">이전</a>
+                            </div>
+                            <div th:unless="${currentPage > 1}" class="disabled">
+                                <span>이전</span>
+                            </div>
+
+                            <!-- 페이지 번호 반복 출력 -->
+                            <div th:each="i : ${#numbers.sequence(1, totalPages)}"
+                                th:classappend="${i == currentPage} ? 'active'">
+                                <a th:href="@{/community/detail(communitySeq=${communityDetailDto.seq}, page=${i})}"
+                                th:text="${i}">1</a>
+                            </div>
+
+                            <!-- 다음 버튼 -->
+                            <div th:if="${currentPage < totalPages}">
+                                <a th:href="@{/community/detail(communitySeq=${communityDetailDto.seq}, page=${currentPage + 1})}">다음</a>
+                            </div>
+                            <div th:unless="${currentPage < totalPages}" class="disabled">
+                                <span>다음</span>
+                            </div>
+                    </div>
+                </div>
+
+                <div th:if="${totalCount == 0}">
+                    <span>작성된 댓글이 없습니다..</span>
+                </div>
+            </div>
+        </div>
+    <script th:src="@{/smarteditor2/js/HuskyEZCreator.js}" charset="utf-8"></script>
+    <script th:src="@{/js/communityDetail.js}" charset="utf-8"></script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{findMatchInfo}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+    <body>
+        <div th:fragment="matchInfoBuild">
+            <div>
+                <!-- Map<Integer, List<EventDto>> 루프 -->
+                <div class="itemBuildBox">
+                    <div class="itemBuildTitleBox">
+                        <div class="itemBuildTitle">
+                            Item Build
+                        </div>
+                    </div>
+                    <div class="itemBuildTimeLineBox">
+                        <div th:each="entry,iterStat : ${eventDtos}">
+                            <!-- key = intervalIndex -->
+                            <div th:text="${(entry.key + 1) * 4 + '분'}" class="itemBuildTimeFont"></div>
+                            <!-- value = List<EventDTO> -->
+                            <div class="itemBuildTimeLine">
+                                <div th:if="${!iterStat.first}"  class="itemBuildTimeLineArrow">
+                                    >
+                                </div>
+                                <div class="itemBuildTimeLineItemBox">   
+                                    <div th:each="event : ${entry.value}">
+                                        <img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item}.png'(item = ${event.itemId})}" class="itemBuildTimeLineItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${event.itemName + '<br>' + event.itemDescription}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skillBuildTimeLineBox">
+                    <div class="skillBuildTitleBox">
+                        <div class="skillBulidTitle">
+                            Skill
+                        </div>
+                    </div>
+                    <div class="skillTreeBox">
+                            <div th:each="skill : ${skillLevelUp}" >
+                                <div th:if="${skill.skillKey == 'Q'}" th:text="${skill.skillKey}" class="Qskill"></div>
+                                <div th:if="${skill.skillKey == 'W'}" th:text="${skill.skillKey}" class="Wskill"></div>
+                                <div th:if="${skill.skillKey == 'E'}" th:text="${skill.skillKey}" class="Eskill"></div>
+                                <div th:if="${skill.skillKey == 'R'}" th:text="${skill.skillKey}" class="Rskill"></div>
+                            </div>
+                    </div>
+                </div>
+                <div class="runeBuildBox">
+                    <div class="runeBuildTitle">
+                            Rune
+                    </div>
+                    <div class="runeTreeBox">
+                        <div class="flex">
+                            <div th:each="mainRune,iterStat : ${mainRunes}" class="mainRuneBox">
+                                    <img th:if="${iterStat.first}" th:src="@{'https://ddragon.leagueoflegends.com/cdn/img/{runeIcon}'(runeIcon=${mainRune.icon})}" class="mainAttributeRuneImg" th:attr="data-tippy-content=${mainRune.name + '<br>' + mainRune.shortDesc}">
+                            </div>
+                            <div th:each="mainRune,iterStat : ${mainRunes}" class="mainRuneBox">
+                                    <img th:unless="${iterStat.first}" th:src="@{'https://ddragon.leagueoflegends.com/cdn/img/{runeIcon}'(runeIcon=${mainRune.icon})}" class="subAttributeRuneImg" th:attr="data-tippy-content=${mainRune.name + '<br>' + mainRune.shortDesc}">
+                            </div>
+                        </div>
+                        <div class="subRuneBox">
+                            <div th:each="subRune : ${subRunes}"><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/img/{subRuneIcon}'(subRuneIcon=${subRune.icon})}" class="subRuneImg" th:attr="data-tippy-content=${subRune.name + '<br>' + subRune.shortDesc}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{findMatchInfo}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div th:fragment="matchInfoOverview">
+                        <div class="teamBox">
+                            <div class="teamStateBox">
+                                <div class="teamState">
+                                    <div th:text="${riotMatchDto.info.serchIdTeam} "></div>
+                                    <div th:text="${riotMatchDto.info.serchIdWin}"></div>
+                                </div>
+                                <div style="width: 9%;">KDA</div>
+                                <div style="width: 11%;">Damage</div>
+                                <div style="width: 8%;">wards</div>
+                                <div style="width: 18%;">CS</div>
+                                <div >Items</div>
+                            </div>
+                            <div class="searchIdTeamBox">
+                                <div th:each="serchIdTeamDto : ${riotMatchDto.info.serchIdTeamParticipants}" class="teamParticipantInfoBox">
+                                    <div class="teamParticipantBuildBox">
+                                        <div>
+                                            <div class="teamParticipantNameLevelBox">
+                                                <img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/champion/{championKeyName}.png'(championKeyName=${serchIdTeamDto.championName})}" class="teamParticipantChampionImg">
+                                                <div th:text="${serchIdTeamDto.champLevel}" class="teamParticipantChampionLevel"></div>
+                                            </div>
+                                        </div>    
+                                        <div>
+                                            <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/spell/{SummonerSpell1Name}.png'(SummonerSpell1Name=${serchIdTeamDto.summonerSpells[0].summonerSpellId})}" class="teamParticipantSummonerSpellImg" th:attr="data-tippy-content=${serchIdTeamDto.summonerSpells[0].summonerSpellName + '<br>' + serchIdTeamDto.summonerSpells[0].summonerDescription}"></div>
+                                            <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/spell/{SummonerSpell2Name}.png'(SummonerSpell2Name=${serchIdTeamDto.summonerSpells[1].summonerSpellId})}" class="teamParticipantSummonerSpellImg" th:attr="data-tippy-content=${serchIdTeamDto.summonerSpells[1].summonerSpellName + '<br>' + serchIdTeamDto.summonerSpells[1].summonerDescription}"></div>
+                                        </div>
+                                        <div>
+                                            <div th:each="rune, iterStat : ${serchIdTeamDto.rune}">
+                                                <div th:if="${iterStat.index == 0}">
+                                                    <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/img/{runeIcon}'(runeIcon=${rune.icon})}" th:attr="data-tippy-content=${rune.name} + '<br>' + ${rune.shortDesc}" class="teamParticipantMainRuneImg"></span>
+                                                </div>
+                                            </div>
+                                            <div style="display: flex;">
+                                                <div th:each="rune, iterStat : ${serchIdTeamDto.rune}">
+                                                    <div th:if="${iterStat.index == 4 or iterStat.index == 5}">
+                                                        <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/img/{runeIcon}'(runeIcon=${rune.icon})}" th:attr="data-tippy-content=${rune.name} + '<br>' + ${rune.shortDesc}" class="teamParticipantSubRuneImg"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="teamParticipantScoreBox">
+                                        <div class="serchMatchLink teamParticipantId" th:text="${serchIdTeamDto.riotIdGameName}"  th:attr="data-riot-id=${serchIdTeamDto.riotIdGameName + '#' + serchIdTeamDto.riotIdTagline}" ></div> 
+                                        <div class="teamParticipantKdaBox" >
+                                            <div th:text="${serchIdTeamDto.kills + '/' + serchIdTeamDto.deaths + '/' + serchIdTeamDto.assists + ' (' + serchIdTeamDto.kdaPercent + '%)'}"></div>
+                                            <div th:text="${serchIdTeamDto.kda}"> </div>
+                                        </div>  
+                                        <div class="teamParticipantDamegePercentBox">
+                                            <div th:text="${#numbers.formatInteger(serchIdTeamDto.totalDamageDealtToChampions,0,'COMMA')}"></div>
+                                            <div class="teamParticipantDamegePercentBackgroundBar">
+                                                <div th:style="'width:' + ${serchIdTeamDto.totalDamageDealtToChampionsPercent} + '%;background-color:#E84057;height:100%' "></div>
+                                            </div>
+                                        </div>
+                                        <div class="teamParticipantDamegeTakenPercentBox">
+                                            <div th:text="${#numbers.formatInteger(serchIdTeamDto.totalDamageTaken,0,'COMMA')}"></div>
+                                            <div class="teamParticipantDamegeTakenPercentBackgroundBar">
+                                                <div th:style="'width:' + ${serchIdTeamDto.totalDamageTakenPercent} + '%;background-color:#7B7A8E;height:100%' "></div>
+                                            </div>
+                                        </div>
+                                        <div class="teamParticipantWardScoreBox" >
+                                            <div th:text="${serchIdTeamDto.visionScore}"></div>
+                                            <div>
+                                                <div th:text="${serchIdTeamDto.wardsPlaced + '/' + serchIdTeamDto.wardsKilled}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="teamParticipantCsBox">
+                                            <div th:text="${serchIdTeamDto.neutralMinionsKilled + serchIdTeamDto.totalMinionsKilled}"></div>
+                                            <div th:text="${serchIdTeamDto.cspm} + '/m'"></div>
+                                        </div>
+                                    </div>
+                                    <div class="teamParticipantItemBox">
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item0}.png'(item0 = ${serchIdTeamDto.item0})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${serchIdTeamDto.items[0].name + '<br>' + serchIdTeamDto.items[0].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item1}.png'(item1 = ${serchIdTeamDto.item1})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${serchIdTeamDto.items[1].name + '<br>' + serchIdTeamDto.items[1].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item2}.png'(item2 = ${serchIdTeamDto.item2})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${serchIdTeamDto.items[2].name + '<br>' + serchIdTeamDto.items[2].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item3}.png'(item3 = ${serchIdTeamDto.item3})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${serchIdTeamDto.items[3].name + '<br>' + serchIdTeamDto.items[3].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item4}.png'(item4 = ${serchIdTeamDto.item4})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${serchIdTeamDto.items[4].name + '<br>' + serchIdTeamDto.items[4].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item5}.png'(item5 = ${serchIdTeamDto.item5})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${serchIdTeamDto.items[5].name + '<br>' + serchIdTeamDto.items[5].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item6}.png'(item6 = ${serchIdTeamDto.item6})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${serchIdTeamDto.items[6].name + '<br>' + serchIdTeamDto.items[6].description}"/></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="totalTeamObjectScoreBox">
+                                    
+                                        <div class="teamObjectScoreBox">
+                                            <div class="blueTeamFont">블루팀</div>
+                                            <div class="teamObjectScoreSize">
+                                                <div>
+                                                    <span class="blueTeamObjectScoreName">바론</span>
+                                                    <span th:text="${buleTeamDto.objectives.baron.kills}" class="teamObjectScore"></span>
+                                                    <span class="blueTeamObjectScoreName">아타칸</span>
+                                                    <span th:text="${buleTeamDto.objectives.atakhan.kills}" class="teamObjectScore"></span>
+                                                    <span class="blueTeamObjectScoreName">드래곤</span>
+                                                    <span th:text="${buleTeamDto.objectives.dragon.kills}" class="teamObjectScore"></span>
+                                                    <span class="blueTeamObjectScoreName">유충</span>
+                                                    <span th:text="${buleTeamDto.objectives.horde.kills}" class="teamObjectScore"></span>
+                                                </div>
+                                                <div>
+                                                    <span class="blueTeamObjectScoreName">전령</span>
+                                                    <span th:text="${buleTeamDto.objectives.riftHerald.kills}" class="teamObjectScore"></span>
+                                                    <span class="blueTeamObjectScoreName">억제기</span>
+                                                    <span th:text="${buleTeamDto.objectives.inhibitor.kills}" class="teamObjectScore"></span>
+                                                    <span class="blueTeamObjectScoreName">타워</span>
+                                                    <span th:text="${buleTeamDto.objectives.tower.kills}" class="teamObjectScore"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div style="width: 40%;">
+                                                <div style="display: flex;color: #fff;font-size: smaller;position: relative;">
+                                                    <div th:text="${buleTeamDto.objectives.champion.kills}" th:style="'width:' + ${buleTeamDto.teamKillPercent} + '%;background-color:#5383E8;height:100%' "></div>
+                                                    <div th:text="${redTeamDto.objectives.champion.kills}" th:style="'width:' + ${redTeamDto.teamKillPercent} + '%;background-color:#E84057;height:100%;text-align:right' "></div>
+                                                    <div class="teamKillGoldFontPosition">Total Kill</div>
+                                                </div>
+                                                <div style="display: flex;margin-top: 0.5vh;color: #fff;font-size: smaller;position: relative;">
+                                                    <div th:text="${buleTeamDto.teamTotalGold}" th:style="'width:' + ${buleTeamDto.teamTotalGoldPercent} + '%;background-color:#5383E8;height:100%' "></div>
+                                                    <div th:text="${redTeamDto.teamTotalGold}" th:style="'width:' + ${redTeamDto.teamTotalGoldPercent} + '%;background-color:#E84057;height:100%;text-align: right;' "></div>
+                                                    <div class="teamKillGoldFontPosition">Total Gold</div>
+                                                </div>
+                                        </div>
+
+                                        <div class="teamObjectScoreBox">
+                                            <div class="redTeamObjectScoreSize">
+                                                <div>
+                                                    <span class="redTeamObjectScoreName">바론</span>
+                                                    <span th:text="${redTeamDto.objectives.baron.kills}" class="teamObjectScore"></span>
+                                                    <span class="redTeamObjectScoreName">아타칸</span>
+                                                    <span th:text="${redTeamDto.objectives.atakhan.kills}" class="teamObjectScore"></span>
+                                                    <span class="redTeamObjectScoreName">드래곤</span>
+                                                    <span th:text="${redTeamDto.objectives.dragon.kills}" class="teamObjectScore"></span>
+                                                    <span class="redTeamObjectScoreName">유충</span>
+                                                    <span th:text="${redTeamDto.objectives.horde.kills}" class="teamObjectScore"></span>
+                                                </div>
+                                                <div>
+                                                    <span class="redTeamObjectScoreName">전령</span>
+                                                    <span th:text="${redTeamDto.objectives.riftHerald.kills}" class="teamObjectScore"></span>
+                                                    <span class="redTeamObjectScoreName">억제기</span>
+                                                    <span th:text="${redTeamDto.objectives.inhibitor.kills}" class="teamObjectScore"></span>
+                                                    <span class="redTeamObjectScoreName">타워</span>
+                                                    <span th:text="${redTeamDto.objectives.tower.kills}" class="teamObjectScore"></span>
+                                                </div>
+                                            </div>
+                                            <div class="redTeamFont">레드팀</div>
+                                        </div>
+                        </div>
+                        <div class="teamBox">
+                            <div class="teamStateBox">
+                                <div class="teamState">
+                                    <div th:text="${riotMatchDto.info.nonSerchIdTeam} "></div>
+                                    <div th:text="${riotMatchDto.info.nonSerchIdWin}"></div>
+                                </div>
+                                <div style="width: 9%;">KDA</div>
+                                <div style="width: 11%;">Damage</div>
+                                <div style="width: 8%;">wards</div>
+                                <div style="width: 18%;">CS</div>
+                                <div>Items</div>
+                            </div>
+                            <div class="nonSearchIdTeamBox">
+                                <div th:each="nonSerchIdTeamDto : ${riotMatchDto.info.nonSerchIdTeamParticipants}"  class="teamParticipantInfoBox">
+                                    <div class="teamParticipantBuildBox">
+                                        <div>
+                                            <div class="teamParticipantNameLevelBox">
+                                                <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/champion/{championKeyName}.png'(championKeyName=${nonSerchIdTeamDto.championName})}" class="teamParticipantChampionImg"></div>
+                                                <div th:text="${nonSerchIdTeamDto.champLevel}" class="teamParticipantChampionLevel"></div>
+                                            </div>
+                                        </div>
+                                        <div>    
+                                            <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/spell/{SummonerSpell1Name}.png'(SummonerSpell1Name=${nonSerchIdTeamDto.summonerSpells[0].summonerSpellId})}" class="teamParticipantSummonerSpellImg" th:attr="data-tippy-content=${nonSerchIdTeamDto.summonerSpells[0].summonerSpellName + '<br>' + nonSerchIdTeamDto.summonerSpells[0].summonerDescription}"></div>
+                                            <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/spell/{SummonerSpell2Name}.png'(SummonerSpell2Name=${nonSerchIdTeamDto.summonerSpells[1].summonerSpellId})}" class="teamParticipantSummonerSpellImg" th:attr="data-tippy-content=${nonSerchIdTeamDto.summonerSpells[1].summonerSpellName + '<br>' + nonSerchIdTeamDto.summonerSpells[1].summonerDescription}"></div>
+                                        </div>
+                                        <div>
+                                            <div th:each="rune, iterStat : ${nonSerchIdTeamDto.rune}">
+                                                <div th:if="${iterStat.index == 0}">
+                                                    <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/img/{runeIcon}'(runeIcon=${rune.icon})}" class="teamParticipantMainRuneImg" th:attr="data-tippy-content=${rune.name} + '<br>' + ${rune.shortDesc}"></span>
+                                                </div>
+                                            </div>
+                                            <div style="display: flex;">
+                                                <div th:each="rune, iterStat : ${nonSerchIdTeamDto.rune}">
+                                                    <div th:if="${iterStat.index == 4 or iterStat.index == 5}">
+                                                        <span><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/img/{runeIcon}'(runeIcon=${rune.icon})}" class="teamParticipantSubRuneImg" th:attr="data-tippy-content=${rune.name} + '<br>' + ${rune.shortDesc}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="teamParticipantScoreBox">
+                                        <div class="serchMatchLink teamParticipantId" th:text="${nonSerchIdTeamDto.riotIdGameName}"   th:attr="data-riot-id=${nonSerchIdTeamDto.riotIdGameName + '#' + nonSerchIdTeamDto.riotIdTagline}"></div>
+                                        <div class="teamParticipantKdaBox">
+                                            <div th:text="${nonSerchIdTeamDto.kills + '/' + nonSerchIdTeamDto.deaths + '/' + nonSerchIdTeamDto.assists + ' (' + nonSerchIdTeamDto.kdaPercent + '%)'}"></div>
+                                            <div th:text="${nonSerchIdTeamDto.kda}"> </div>
+                                        </div>
+                                        <div class="teamParticipantDamegePercentBox">
+                                            <div th:text="${#numbers.formatInteger(nonSerchIdTeamDto.totalDamageDealtToChampions,0,'COMMA')}"></div>
+                                            <div class="teamParticipantDamegePercentBackgroundBar">
+                                                <div th:style="'width:' + ${nonSerchIdTeamDto.totalDamageDealtToChampionsPercent} + '%;background-color:#E84057;height:100%' "></div>
+                                            </div>
+                                        </div>
+                                        <div class="teamParticipantDamegeTakenPercentBox">
+                                            <div th:text="${#numbers.formatInteger(nonSerchIdTeamDto.totalDamageTaken,0,'COMMA')}"></div>
+                                            <div class="teamParticipantDamegeTakenPercentBackgroundBar">
+                                                <div th:style="'width:' + ${nonSerchIdTeamDto.totalDamageTakenPercent} + '%;background-color:#7B7A8E;height:100%' "></div>
+                                            </div>
+                                        </div>
+                                        <div class="teamParticipantWardScoreBox" >
+                                            <div th:text="${nonSerchIdTeamDto.visionScore}"></div>
+                                            <div>
+                                                <div th:text="${nonSerchIdTeamDto.wardsPlaced + '/' + nonSerchIdTeamDto.wardsKilled}"></div>
+                                            </div>
+                                        </div>
+                                        <div class="teamParticipantCsBox">
+                                            <div th:text="${nonSerchIdTeamDto.neutralMinionsKilled + nonSerchIdTeamDto.totalMinionsKilled}"></div>
+                                            <div th:text="${nonSerchIdTeamDto.cspm} + '/m' "></div>
+                                        </div>
+                                    </div>
+                                    <div class="teamParticipantItemBox">
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item0}.png'(item0 = ${nonSerchIdTeamDto.item0})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${nonSerchIdTeamDto.items[0].name + '<br>' + nonSerchIdTeamDto.items[0].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item1}.png'(item1 = ${nonSerchIdTeamDto.item1})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${nonSerchIdTeamDto.items[1].name + '<br>' + nonSerchIdTeamDto.items[1].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item2}.png'(item2 = ${nonSerchIdTeamDto.item2})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${nonSerchIdTeamDto.items[2].name + '<br>' + nonSerchIdTeamDto.items[2].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item3}.png'(item3 = ${nonSerchIdTeamDto.item3})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${nonSerchIdTeamDto.items[3].name + '<br>' + nonSerchIdTeamDto.items[3].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item4}.png'(item4 = ${nonSerchIdTeamDto.item4})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${nonSerchIdTeamDto.items[4].name + '<br>' + nonSerchIdTeamDto.items[4].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item5}.png'(item5 = ${nonSerchIdTeamDto.item5})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${nonSerchIdTeamDto.items[5].name + '<br>' + nonSerchIdTeamDto.items[5].description}"/></div>
+                                        <div><img th:src="@{'https://ddragon.leagueoflegends.com/cdn/15.8.1/img/item/{item6}.png'(item6 = ${nonSerchIdTeamDto.item6})}" class="teamParticipantItemImg" onerror="this.onerror=null;this.src='/riotImg/onerrorImg/0.png';" th:attr="data-tippy-content=${nonSerchIdTeamDto.items[6].name + '<br>' + nonSerchIdTeamDto.items[6].description}"/></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+</div>
+</body>
+</html>

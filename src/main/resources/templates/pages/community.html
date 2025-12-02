@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}"
+      >
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="commonMainBox">
+            <div class="recentTenBox">
+                <div class="recentTenTextBox">
+                    Latest 10 list
+                </div>    
+                <div>
+                    <div th:each="recentTenCommunity : ${recentTenCommunity}" th:attr="data-recent-community-serial=${recentTenCommunity.seq}" class="recentTenCommunityList recentTenBoardBox">
+                        <div th:text="${recentTenCommunity.views}" class="recentTenBoardView"></div>
+                        <div>
+                            <div class="recentTenBoardContentBox">
+                                <div th:text="${recentTenCommunity.title}" class="recentTenBoardTitle"></div>
+                                <div th:text="'['+${recentTenCommunity.commentCount}+']'" class="recentTenBoardCommentCount"></div>    
+                            </div>
+                            <div th:text="${recentTenCommunity.nickname}" class="recentTenBoardAuthor"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mainBoardBox">
+                <div>
+                        <div class="boardSearchBox">
+                            <div class="flex">
+                                <p class="boardTitle">자유게시판</p>
+                                <a th:href = "@{/community/writePage}" class="boardWriteText">글쓰기</a>
+                            </div>
+                            <div class="communitySearchBox">
+                                <div class="communitySearchViewOption">
+                                    <span class="searchOrder">Latest</span>
+                                    <span class="searchOrder">Popular</span>
+                                </div>  
+                                <div class="communitySearchOptionBox">  
+                                    <form th:action="@{/community}" method="GET" id="searchForm">
+                                        <input type="hidden" name="searchOrder" value="${searchOrder}">
+                                        <select name="searchType" class="communitySearchType">
+                                            <option value="all" th:selected="${searchType} == all">전체</option>
+                                            <option value="title" th:selected="${searchType} == title">제목</option>
+                                            <option value="author" th:selected="${searchType} == author">작성자</option>
+                                            <option value="content" th:selected="${searchType} == content">내용</option>
+                                        </select><input type="text" name="searchText" class="communitySearchText" th:value="${searchText}"><button type="submit" class="communitySearchButton">검색</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>    
+                        <form th:action="@{/community/detail}" method="GET" id="communityListForm">
+                            <input type="hidden" name="communitySeq" >
+                        </form>
+                        <div class="marginTop">
+                            <div th:if="${#lists.isEmpty(communityListDto)}" class="nullListBox">
+                                <div>
+                                    내용이 없습니다..
+                                </div>
+                            </div>
+                            <div th:each="communityDto : ${communityListDto}" class="communityList boardContentBox" th:attr="data-community-serial=${communityDto.seq}" >
+                                <div class="boardViewCount">
+                                    <span th:text="${communityDto.views}" class="e0e4d6FontColor"></span>
+                                </div>
+                                <div class="boardContent">
+                                    <div class="minusMarginBottom">
+                                        <strong th:text="${communityDto.title}" class="e0e4d6FontColor" >제목</strong>
+                                        <span th:text="[ + ${communityDto.commentCount} + ]" class="commentCount"></span>  
+                                    </div>
+                                    <div class="boardContentInfo">
+                                        <span th:text="${communityDto.prettyTime}"></span>
+                                        <span th:text="${communityDto.nickname}">작성자</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="boardPageBox" th:unless="${#lists.isEmpty(communityListDto)}">
+                            <a th:href="@{/community(page=1,
+                                        searchType=${searchType},
+                                        searchText=${searchText},
+                                        searchOrder=${searchOrder})}"
+                                style="font-weight: 600;color: #ffffffc2;">
+                                        &laquo; 처음
+                            </a>
+
+                                <div th:each="i : ${#numbers.sequence(page.startPage, page.endPage)}" class="boardPage">
+                                    <a th:href="@{/community(page=${i},
+                                                searchType=${searchType},
+                                                searchText=${searchText},
+                                                searchOrder=${searchOrder})}" 
+                                    th:text="${i}"
+                                    th:classappend="${i == page.page} ? 'active'">
+                                    </a>
+                                </div>
+
+                                <!-- 마지막 페이지로 이동 -->
+                                <a th:href="@{/community(page=${page.totalPages},
+                                                        searchType=${searchType},
+                                                        searchText=${searchText},
+                                                        searchOrder=${searchOrder})}"
+                                    style="font-weight: 600;color: #ffffffc2;">
+                                마지막 &raquo;
+                                </a>
+                        </div>
+
+                </div>
+                    
+        
+
+            </div>
+        </div>
+        <script th:src="@{/js/community.js}" ></script>
+     </div> 
+
+</body>
+</html>
